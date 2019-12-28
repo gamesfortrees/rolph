@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RolphExplosion : MonoBehaviour
-{
+public class ExplosionController : MonoBehaviour {
     private Animator animator;
     private SpriteRenderer smokeRenderer;
     float smokeLifeTime = 0.7f;
@@ -20,8 +19,7 @@ public class RolphExplosion : MonoBehaviour
 
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         if (hasExploded) {
             currentTime += Time.deltaTime;
             if (currentTime >= smokeLifeTime) {
@@ -36,18 +34,14 @@ public class RolphExplosion : MonoBehaviour
         transform.position = nextPos;
     }
 
-    public void Explode() 
-    {
-        int children = transform.childCount;
-        for (int i = 0; i < children; ++i) 
-        {
-            var childTransform = transform.GetChild(i);
+    public void Explode() {
+        rolph.SetActive(false);
+
+        foreach (Transform childTransform in transform) {
             var child = childTransform.gameObject;
             child.GetComponent<SpriteRenderer>().enabled = true;
             var rb = child.GetComponent<Rigidbody2D>();
             rb.gravityScale = 1.0f;
-            var rot = Random.Range(0, 360);
-            //rb.AddTorque(rot);//new Vector3(0, 0, 10.0f * rot), ForceMode2D.Impulse);
             var randX = Random.Range(-100, 100) / 100.0f;
             var randY = Random.Range(-100, 100) / 100.0f;
             var randomForce = Random.Range(10, 20);

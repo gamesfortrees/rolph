@@ -4,8 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class DialogController : MonoBehaviour
-{
+public class DialogController : MonoBehaviour {
     public Sprite rolph;
     public Sprite scaredRolph;
     public Sprite douglas;
@@ -21,40 +20,33 @@ public class DialogController : MonoBehaviour
     private bool resume = false;
     private bool transitionAfterDialog = false;
 
-    void Start()
-    {
+    void Start() {
         box = gameObject.transform.GetChild(0).gameObject;
         box.SetActive(true);
         text = GetComponentInChildren<Text>();
         avatar = GetComponentsInChildren<Image>()[1];
-        box.SetActive(false); 
+        box.SetActive(false);
         gameController = GameObject.FindWithTag("GameMaster").GetComponent<GameController>();
     }
 
-    void Update()
-    {
-        if (!active)
-        {
+    void Update() {
+        if (!active) {
             return;
         }
 
-        if (Input.GetKeyDown("space"))
-        {
+        if (Input.GetKeyDown("space")) {
             AdvanceText();
         }
     }
 
-    private void LateUpdate()
-    {
-        if (resume)
-        {
+    private void LateUpdate() {
+        if (resume) {
             gameController.Resume();
             resume = false;
         }
     }
 
-    public void Dialog1_1()
-    {
+    public void Dialog1_1() {
         avatars = new Sprite[] {
             null,
             rolph,
@@ -80,13 +72,12 @@ public class DialogController : MonoBehaviour
             "The machine starts approaching faster and faster without intention of reducing the speed",
             "What are you doing? Stop!!! That’s enough!! I’m the CEO of the company!!",
             "The excavator isn’t stopping and a scared Rolph starts running away",
-            "Why isn’t he stopping? How can’t he recognize me? I have my my sexy western German accent, my brown and woody bark, my green long leafs… wait a minute… bark? Leafs? I AM A TREE!!!!!!!",
+            "Why isn’t he stopping? How can’t he recognize me? I have my sexy western German accent, my brown and woody bark, my green long leafs… wait a minute… bark? Leafs? I AM A TREE!!!!!!!",
             "Run away from the excavator using 'a' or 'left arrow' and 'd' or 'right arrow' to run and 'space' to jump",
         };
     }
 
-    public void Dialog1_2()
-    {
+    public void Dialog1_2() {
         avatars = new Sprite[] {
             rolph,
             angryDouglas,
@@ -97,18 +88,16 @@ public class DialogController : MonoBehaviour
         };
     }
 
-    public void Dialog1_3()
-    {
+    public void Dialog1_3() {
         avatars = new Sprite[] {
             douglas,
         };
         texts = new string[] {
-            "Here finally a fertile piece of soil. Plant your seed (press 's').",
+            "Here finally a fertile piece of soil. Plant your seed (press 's' or 'down arrow').",
         };
     }
 
-    public void Dialog1_4()
-    {
+    public void Dialog1_4() {
         avatars = new Sprite[] {
             rolph,
             angryDouglas,
@@ -126,8 +115,7 @@ public class DialogController : MonoBehaviour
         transitionAfterDialog = true;
     }
 
-    public void Dialog2_1()
-    {
+    public void Dialog2_1() {
         avatars = new Sprite[] {
             rolph,
             douglas,
@@ -141,38 +129,30 @@ public class DialogController : MonoBehaviour
         transitionAfterDialog = true;
     }
 
-    void AdvanceText()
-    {
-        if (currentLine < texts.Length)
-        {
+    void AdvanceText() {
+        if (currentLine < texts.Length) {
             text.text = texts[currentLine];
             avatar.sprite = avatars[currentLine];
-            if (avatars[currentLine] == null)
-            {
+            if (avatars[currentLine] == null) {
                 text.fontStyle = FontStyle.Italic;
-                avatar.color = new Color(0,0,0,0);
-            } else
-            {
+                avatar.color = new Color(0, 0, 0, 0);
+            } else {
                 text.fontStyle = FontStyle.Normal;
                 avatar.color = new Color(255, 255, 255, 255);
             }
             currentLine += 1;
-        }
-        else
-        {
+        } else {
             box.SetActive(false);
             active = false;
             resume = true;
-            if (transitionAfterDialog)
-            {
+            if (transitionAfterDialog) {
                 transitionAfterDialog = false;
                 gameController.NextLevel();
             }
         }
     }
 
-    public void Activate()
-    {
+    public void Activate() {
         currentLine = 0;
         gameController.Pause();
         box.SetActive(true);
